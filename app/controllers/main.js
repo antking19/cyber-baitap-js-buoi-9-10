@@ -34,7 +34,7 @@ const renderStaffList = (data) => {
     getEleId("tableDanhSach").innerHTML = content;
 };
 
-const getInfoStaff = () => {
+const getInfoStaff = (isAdd) => {
     const staffUser = getEleId("tknv").value;
     const staffName = getEleId("name").value;
     const staffEmail = getEleId("email").value;
@@ -46,20 +46,28 @@ const getInfoStaff = () => {
 
     let isValidId = true;
 
-    // staff user
-    isValidId &=
-        validation.checkEmpty(
-            staffUser,
-            "tbTKNV",
-            "Please enter staff user!"
-        ) &&
-        validation.checkLength(
-            staffUser,
-            "tbTKNV",
-            "Please enter character min 4 and max 6!",
-            4,
-            6
-        );
+    if (isAdd) {
+        // staff user
+        isValidId &=
+            validation.checkEmpty(
+                staffUser,
+                "tbTKNV",
+                "Please enter staff user!"
+            ) &&
+            validation.checkLength(
+                staffUser,
+                "tbTKNV",
+                "Please enter character min 4 and max 6!",
+                4,
+                6
+            ) &&
+            validation.checkUserExist(
+                staffUser,
+                "tbTKNV",
+                "User already exists!",
+                staffList.arr
+            );
+    }
 
     // staff name
     isValidId &= validation.checkEmpty(
@@ -250,7 +258,7 @@ const getLocalStorage = () => {
 getLocalStorage();
 
 getEleId("btnThemNV").onclick = function () {
-    const staff = getInfoStaff();
+    const staff = getInfoStaff(true);
 
     if (!staff) return;
 
@@ -289,7 +297,7 @@ getEleId("btnThem").onclick = function () {
 };
 
 getEleId("btnCapNhat").onclick = function () {
-    const staff = getInfoStaff();
+    const staff = getInfoStaff(false);
 
     staffList.updateStaff(staff);
 

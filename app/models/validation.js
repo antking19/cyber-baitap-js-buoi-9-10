@@ -90,6 +90,27 @@ class Validation {
         getEleId(divId).style.display = "block";
         return false;
     }
+
+    checkUserExist(value, divId, mess, listStaff) {
+        let isExist = false;
+        for (let i = 0; i < listStaff.length; i++) {
+            const staff = listStaff[i];
+            if (staff.user === value) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (isExist) {
+            // user ton tai => khong hop le
+            getEleId(divId).innerHTML = mess;
+            getEleId(divId).style.display = "block";
+            return false;
+        }
+        getEleId(divId).innerHTML = "";
+        getEleId(divId).style.display = "none";
+        return true;
+    }
 }
 
 export default Validation;
